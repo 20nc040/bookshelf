@@ -2,11 +2,11 @@ import { useState } from "react";
 import { GlobalStyles } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form"
 
-import { FormDialog } from "./FormDialog";
-import { ToolBar } from "./ToolBar";
-import { MainFAB } from "./MainFAB";
-import { Shelf } from "./Shelf";
-import { SideBar } from "./SideBar";
+import { FormDialog } from "./components/FormDialog";
+import { ToolBar } from "./components/ToolBar";
+import { MainFAB } from "./components/MainFAB";
+import { Shelf } from "./components/Shelf";
+import { SideBar } from "./components/SideBar";
 import { Book } from "./Book";
 
 export const App = () => {

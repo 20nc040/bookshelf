@@ -1,7 +1,7 @@
 import { Alert, createTheme, Dialog, ThemeProvider, Typography } from "@mui/material";
 import { UseFormRegister, UseFormHandleSubmit, SubmitHandler, FieldErrors } from "react-hook-form";
 import { InputBox } from "./InputBox";
-import { Book } from "./Book";
+import { Book } from "../Book";
 
 type Props = {
   dialogOpen: boolean;
