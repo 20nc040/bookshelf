@@ -1,1 +1,0 @@
-declare type Layout = "cover" | "cover&info" | "info";

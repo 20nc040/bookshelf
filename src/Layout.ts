@@ -1,0 +1,1 @@
+export type Layout = "cover" | "cover&info" | "info";
