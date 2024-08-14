@@ -1,4 +1,5 @@
 import { Card, CardContent, CardMedia, Container, styled, Typography } from "@mui/material";
+import { Book } from "./Book";
 
 type Props = {
   books: Book[];

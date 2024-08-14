@@ -7,6 +7,7 @@ import { ToolBar } from "./ToolBar";
 import { MainFAB } from "./MainFAB";
 import { Shelf } from "./Shelf";
 import { SideBar } from "./SideBar";
+import { Book } from "./Book";
 
 export const App = () => {
 
