@@ -1,8 +1,10 @@
-import { Card, CardContent, CardMedia, Container, styled, Typography } from "@mui/material";
+import { Card, CardContent, CardMedia, Container, Grid, styled, Typography } from "@mui/material";
 import { Book } from "../Book";
+import { Layout } from "../Layout";
 
 type Props = {
   books: Book[];
+  layout: Layout;
 };
 
 const BookCard = styled(Card)({
@@ -13,7 +15,12 @@ const BookCard = styled(Card)({
 
 const BookCover = styled(CardMedia)({
   width: "25%",
-  height: "auto,"
+  height: "auto",
+}) as typeof CardMedia;
+
+const BookCoverFull = styled(CardMedia)({
+  width: "100%",
+  height: "auto",
 }) as typeof CardMedia;
 
 const BookInfo = styled(CardContent)({
@@ -41,14 +48,30 @@ const BookAuthor = styled(Typography)({
 });
 
 
-export const Shelf = ({ books }: Props) => {
-
-  return (
+export const Shelf = ({ books, layout }: Props) => {
+  layout = "cover"
+  return layout === "cover" ? (
+    <Grid container alignItems="center" justifyContent="center" spacing={1} marginTop="12px" padding="2px">
+      {books.map((book) => {
+        return (
+          <Grid item xs={6} sm={3} md={2} xl={1}>
+            <Card>
+              <BookCoverFull
+                component="img"
+                src={book.coverPath}
+                alt="表紙"
+              />
+            </Card>
+          </Grid>
+        )
+      })}
+    </Grid>
+  ) : (
     <Container sx={{
       marginTop: "12px",
     }}>
       {books.map((book) => {
-        return (
+        return layout === "cover&info" ? (
           <BookCard>
             <BookCover
               component="img"
@@ -60,7 +83,14 @@ export const Shelf = ({ books }: Props) => {
               <BookAuthor variant="subtitle2">作者, 出版社, 発行年</BookAuthor>
             </BookInfo>
           </BookCard>
-        );
+        ) : (
+          <BookCard>
+            <BookInfo>
+              <BookTitle variant="subtitle1" gutterBottom>{book.title}</BookTitle>
+              <BookAuthor variant="subtitle2">作者, 出版社, 発行年</BookAuthor>
+            </BookInfo>
+          </BookCard>
+        )
       })}
     </Container>
   );

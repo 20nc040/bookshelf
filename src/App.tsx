@@ -8,6 +8,7 @@ import { MainFAB } from "./components/MainFAB";
 import { Shelf } from "./components/Shelf";
 import { SideBar } from "./components/SideBar";
 import { Book } from "./Book";
+import { Layout } from "./Layout";
 
 export const App = () => {
 
@@ -36,7 +37,7 @@ export const App = () => {
   // const [searchOpen, setSearchOpen] = useState<boolean>(false); // 検索フォームが開いているか
   // const [moreToolOpen, setMoreToolOpen] = useState<boolean>(false); // さらなるツールが開いているか
   const [newBookDialogOpen, setNewBookDialogOpen] = useState<boolean>(false); // 本の登録ダイアログが開いているか
-  // const [layout, setLayout] = useState<Layout>("cover&info"); // 本のレイアウトの種類
+  const [layout, setLayout] = useState<Layout>("cover&info"); // 本のレイアウトの種類
   // const [currentBook, setCurrentBook] = useState<Book | null>(null);  // 現在開いている本
 
   // 入力フォーム管理用react-hook-form変数
@@ -61,6 +62,10 @@ export const App = () => {
   // 登録ダイアログをトグル
   const handleToggleNewBookDialog = () => {
     setNewBookDialogOpen((isOpen) => !isOpen);
+  };
+  // レイアウトを変更
+  const handleChangeLayout = (newLayout: Layout) => {
+    setLayout(newLayout);
   };
 
 
@@ -96,6 +101,7 @@ export const App = () => {
       />
       <Shelf
         books={books}
+        layout={layout}
       />
       <p style={{ overflowWrap: "break-word" }}>
         {JSON.stringify(books)}
