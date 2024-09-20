@@ -1,11 +1,14 @@
 import { AppBar, IconButton, Toolbar } from "@mui/material";
 import Icon from "@mui/material/Icon";
+import { RefObject } from "react";
 
 type Props = {
   onClickSideBar: () => void;
+  onClickMoreTool: () => void;
+  buttonRef: RefObject<HTMLButtonElement>;
 }
 
-export const ToolBar = ({ onClickSideBar, }: Props) => (
+export const ToolBar = ({ onClickSideBar, onClickMoreTool, buttonRef }: Props) => (
   <AppBar position="static">
     <Toolbar>
 
@@ -39,6 +42,8 @@ export const ToolBar = ({ onClickSideBar, }: Props) => (
         size="large"
         edge="start"
         sx={{ mr: -1 }}
+        onClick={onClickMoreTool}
+        ref={buttonRef}
       >
         <Icon>more_horiz</Icon>
       </IconButton>

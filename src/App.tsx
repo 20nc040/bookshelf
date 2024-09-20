@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { GlobalStyles } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form"
 
@@ -9,6 +9,7 @@ import { Shelf } from "./components/Shelf";
 import { SideBar } from "./components/SideBar";
 import { Book } from "./Book";
 import { Layout } from "./Layout";
+import { MoreTool } from "./components/MoreTool";
 
 export const App = () => {
 
@@ -35,10 +36,12 @@ export const App = () => {
   // 状態管理用React変数
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(false); // サイドバーが開いているか
   // const [searchOpen, setSearchOpen] = useState<boolean>(false); // 検索フォームが開いているか
-  // const [moreToolOpen, setMoreToolOpen] = useState<boolean>(false); // さらなるツールが開いているか
+  const [moreToolOpen, setMoreToolOpen] = useState<boolean>(false); // さらなるツールが開いているか
+  const anchorEl = useRef<HTMLButtonElement>(null);
   const [newBookDialogOpen, setNewBookDialogOpen] = useState<boolean>(false); // 本の登録ダイアログが開いているか
   const [layout, setLayout] = useState<Layout>("cover&info"); // 本のレイアウトの種類
   // const [currentBook, setCurrentBook] = useState<Book | null>(null);  // 現在開いている本
+  // const [selectedBook, setSelectedBook] = useState<Map>([]); // 選択中の本
 
   // 入力フォーム管理用react-hook-form変数
   const {
@@ -58,6 +61,10 @@ export const App = () => {
   // サイドバーをトグル
   const handleToggleSideBar = () => {
     setSideBarOpen((isOpen) => !isOpen);
+  };
+  // さらなるツールをトグル
+  const handleMoreToolOpen = () => {
+    setMoreToolOpen((isOpen) => !isOpen)
   };
   // 登録ダイアログをトグル
   const handleToggleNewBookDialog = () => {
@@ -83,10 +90,18 @@ export const App = () => {
       }} />
       <ToolBar
         onClickSideBar={handleToggleSideBar}
+        onClickMoreTool={handleMoreToolOpen}
+        buttonRef={anchorEl}
       />
       <SideBar
         sideBarOpen={sideBarOpen}
         onCloseSideBar={handleToggleSideBar}
+      />
+      <MoreTool
+        open={moreToolOpen}
+        onClose={handleMoreToolOpen}
+        anchorEl={anchorEl}
+        handleLayout={handleChangeLayout}
       />
       <FormDialog
         dialogOpen={newBookDialogOpen}
@@ -104,6 +119,7 @@ export const App = () => {
         layout={layout}
       />
       <p style={{ overflowWrap: "break-word" }}>
+        {layout + "\n"}
         {JSON.stringify(books)}
       </p>
     </>

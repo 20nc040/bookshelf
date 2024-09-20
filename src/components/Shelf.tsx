@@ -49,7 +49,7 @@ const BookAuthor = styled(Typography)({
 
 
 export const Shelf = ({ books, layout }: Props) => {
-  layout = "cover"
+
   return layout === "cover" ? (
     <Grid container alignItems="center" justifyContent="center" spacing={1} marginTop="12px" padding="2px">
       {books.map((book) => {
