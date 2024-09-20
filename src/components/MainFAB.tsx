@@ -17,6 +17,9 @@ export const MainFAB = ({ onClick }: Props) => {
       <FAB onClick={onClick}>
         <Icon>auto_stories</Icon>
       </FAB>
+      {/* <FAB sx={{ bottom: 85 }}>
+        <Icon>select</Icon>
+      </FAB> */}
     </>
   );
 };
