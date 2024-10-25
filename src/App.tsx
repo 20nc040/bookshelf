@@ -10,9 +10,9 @@ import { SideBar } from "./components/SideBar";
 import { Book } from "./Book";
 import { Layout } from "./Layout";
 import { MoreTool } from "./components/MoreTool";
+import { BookDialog } from "./components/BookDialog";
 
 export const App = () => {
-
 
   // ダミーデータ
   const dummyBooks: Book[] = [
@@ -40,7 +40,7 @@ export const App = () => {
   const anchorEl = useRef<HTMLButtonElement>(null);
   const [newBookDialogOpen, setNewBookDialogOpen] = useState<boolean>(false); // 本の登録ダイアログが開いているか
   const [layout, setLayout] = useState<Layout>("cover&info"); // 本のレイアウトの種類
-  // const [currentBook, setCurrentBook] = useState<Book | null>(null);  // 現在開いている本
+  const [currentBook, setCurrentBook] = useState<Book | null>(null);  // 現在開いている本
   // const [selectedBook, setSelectedBook] = useState<Map>([]); // 選択中の本
 
   // 入力フォーム管理用react-hook-form変数
@@ -74,6 +74,31 @@ export const App = () => {
   const handleChangeLayout = (newLayout: Layout) => {
     setLayout(newLayout);
   };
+  // 現在の本を管理
+  const handleCurrentBook = (newBook?: Book) => {
+    setCurrentBook(newBook ? newBook : null); // newBookがundefinedだったらnullを与えたい
+  };
+
+  // 本の更新
+  const updateBook = (editedBook: Book) => {
+    setBooks((books) => {
+      const updatedBooks = books.map((book) => {
+        if (book.id === editedBook.id) {
+          return editedBook;
+        } else {
+          return book;
+        }
+      });
+      return updatedBooks;
+    });
+  };
+  // 本の削除
+  const deleteBook = (deletingBookId: number) => {
+    setBooks((books) => {
+      const updatedBooks = books.filter((book) => book.id !== deletingBookId);
+      return updatedBooks;
+    });
+  }
 
 
   console.log(watch("title" as "id"))
@@ -111,6 +136,15 @@ export const App = () => {
         errors={errors}
         onSubmit={onSubmit}
       />
+      {currentBook && (
+        <BookDialog
+          book={currentBook}
+          updateBook={updateBook}
+          deleteBook={deleteBook}
+          open={Boolean(currentBook)}
+          onClose={handleCurrentBook}
+        />
+      )}
       <MainFAB
         onClick={handleToggleNewBookDialog}
       />
