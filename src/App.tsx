@@ -16,17 +16,16 @@ export const App = () => {
 
   // ダミーデータ
   const dummyBooks: Book[] = [
-    { id: 1000, isbn: "9784297129163", title: "TypeScriptとReact/Next.jsでつくる実践Webアプリケーション開発", coverPath: "https://ndlsearch.ndl.go.jp/thumbnail/9784297129163.jpg" },
-    { id: 2000, isbn: "9784422311074", title: "世界図書館遺産 : 壮麗なるクラシックライブラリー23選", coverPath: "https://ndlsearch.ndl.go.jp/thumbnail/9784422311074.jpg" },
-    { id: 3000, isbn: "9784000801317", title: "広辞苑　第7版", coverPath: "https://ndlsearch.ndl.go.jp/thumbnail/9784000801317.jpg" },
-    { id: 4000, isbn: "9784641104846", title: "六法全書 令和6年版", coverPath: "https://ndlsearch.ndl.go.jp/thumbnail/9784641104846.jpg" },
-    { id: 5000, isbn: "9784103549512", title: "成瀬は天下を取りにいく", coverPath: "http://books.google.com/books/content?id=JbqizwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" },
-    { id: 6000, isbn: "9784480020727", title: "梶井基次郎全集", coverPath: "http://books.google.com/books/content?id=GYwqAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" },
-    { id: 7000, isbn: "9784088518312", title: "DRAGON BALL 1 (ジャンプコミックス)", coverPath: "http://books.google.com/books/content?id=SL39GgAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api" },
-    // { id: 8000, isbn: "406145840X", title: "窓際のトットちゃん" },
-    { id: 9000, isbn: "9780735811669", title: "Alice in Wonderland", coverPath: "http://books.google.com/books/content?id=taF1PwAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" },
+    { id: "1000", isbn: "9784297129163", title: "TypeScriptとReact/Next.jsでつくる実践Webアプリケーション開発", coverPath: "https://ndlsearch.ndl.go.jp/thumbnail/9784297129163.jpg" },
+    { id: "2000", isbn: "9784422311074", title: "世界図書館遺産 : 壮麗なるクラシックライブラリー23選", coverPath: "https://ndlsearch.ndl.go.jp/thumbnail/9784422311074.jpg" },
+    { id: "3000", isbn: "9784000801317", title: "広辞苑　第7版", coverPath: "https://ndlsearch.ndl.go.jp/thumbnail/9784000801317.jpg" },
+    { id: "4000", isbn: "9784641104846", title: "六法全書 令和6年版", coverPath: "https://ndlsearch.ndl.go.jp/thumbnail/9784641104846.jpg" },
+    { id: "5000", isbn: "9784103549512", title: "成瀬は天下を取りにいく", coverPath: "http://books.google.com/books/content?id=JbqizwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" },
+    { id: "6000", isbn: "9784480020727", title: "梶井基次郎全集", coverPath: "http://books.google.com/books/content?id=GYwqAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" },
+    { id: "7000", isbn: "9784088518312", title: "DRAGON BALL 1 (ジャンプコミックス)", coverPath: "http://books.google.com/books/content?id=SL39GgAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api" },
+    // { id: "8000", isbn: "406145840X", title: "窓際のトットちゃん" },
+    { id: "9000", isbn: "9780735811669", title: "Alice in Wonderland", coverPath: "http://books.google.com/books/content?id=taF1PwAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" },
   ];
-
   // データ管理用React変数
   const [books, setBooks] = useState<Book[]>(dummyBooks); // 本の一覧
   // const [shelf, setShelf] = useState
@@ -93,7 +92,7 @@ export const App = () => {
     });
   };
   // 本の削除
-  const deleteBook = (deletingBookId: number) => {
+  const deleteBook = (deletingBookId: string) => {
     setBooks((books) => {
       const updatedBooks = books.filter((book) => book.id !== deletingBookId);
       return updatedBooks;
@@ -136,7 +135,7 @@ export const App = () => {
         errors={errors}
         onSubmit={onSubmit}
       />
-      {currentBook && (
+      {currentBook != null && (
         <BookDialog
           book={currentBook}
           updateBook={updateBook}

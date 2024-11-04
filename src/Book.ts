@@ -1,6 +1,11 @@
 export type Book = {
-  readonly id: number;
+  readonly id: string;
   isbn: string;
   title: string;
   coverPath?: string;
+  authors?: string;
+  publisher?: string;
+  publishedDate?: string;
+  note?: string;
+  tags?: string[];
 };
