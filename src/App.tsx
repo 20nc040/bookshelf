@@ -102,10 +102,12 @@ export const App = () => {
       const updatedBooks = books.filter((book) => book.id !== deletingBookId);
       return updatedBooks;
     });
-  }
+    console.log(`ID:${deletingBookId}の本を削除`);
+  };
 
 
-  console.log(watch("title" as "id"))
+  console.log(watch("title" as "id"));
+  console.log(books.filter((book) => book.id !== "1000"));
 
 
   return (

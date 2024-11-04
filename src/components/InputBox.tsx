@@ -1,4 +1,4 @@
-import { Box, createTheme, IconButton, InputAdornment, TextField, ThemeProvider } from "@mui/material";
+import { Box, createTheme, IconButton, /*InputAdornment,*/ TextField, ThemeProvider } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { UseFormRegisterReturn } from "react-hook-form";
 
@@ -37,28 +37,29 @@ const compressedTextField = createTheme({
 
 export const InputBox = ({ label, formRegisterReturn, errorsDiv, scannable }: Props) => {
   return (
-    <>
+    <Box>
       <Box
-        display="flex"
         padding="4px"
         paddingBottom="0"
+        sx={{ display: "flex" }}
       >
         <ThemeProvider theme={compressedTextField}>
           <TextField
             label={label}
             {...formRegisterReturn}
-            InputProps={{
-              endAdornment:
-                <InputAdornment position="end">
-                  <IconButton
-                    sx={{
-                      padding: 0.25
-                    }}
-                  >
-                    <Icon>clear</Icon>
-                  </IconButton>
-                </InputAdornment>
-            }}
+            // InputProps={{
+            //   endAdornment:
+            //     <InputAdornment position="end">
+            //       <IconButton
+            //         sx={{
+            //           padding: 0.25
+            //         }}
+            //       >
+            //         <Icon>clear</Icon>
+            //       </IconButton>
+            //     </InputAdornment>
+            // }}
+            sx={{ flexGrow: 1 }}
           />
         </ThemeProvider >
         {scannable && (
@@ -78,6 +79,6 @@ export const InputBox = ({ label, formRegisterReturn, errorsDiv, scannable }: Pr
       >
         {errorsDiv}
       </Box>
-    </>
+    </Box>
   );
 };
