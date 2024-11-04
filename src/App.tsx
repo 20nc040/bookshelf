@@ -39,7 +39,7 @@ export const App = () => {
   const anchorEl = useRef<HTMLButtonElement>(null);
   const [newBookDialogOpen, setNewBookDialogOpen] = useState<boolean>(false); // 本の登録ダイアログが開いているか
   const [layout, setLayout] = useState<Layout>("cover&info"); // 本のレイアウトの種類
-  const [currentBook, setCurrentBook] = useState<Book | null>(null);  // 現在開いている本
+  const [currentBook, setCurrentBook] = useState<Book | null>(dummyBooks[0]);  // 現在開いている本
   // const [selectedBook, setSelectedBook] = useState<Map>([]); // 選択中の本
 
   // 入力フォーム管理用react-hook-form変数
@@ -77,6 +77,11 @@ export const App = () => {
   const handleCurrentBook = (newBook?: Book) => {
     setCurrentBook(newBook ? newBook : null); // newBookがundefinedだったらnullを与えたい
   };
+  // 現在の本をnullに変更
+  // handleCurrentBookをBookDialogのonCloseとして渡してもうまくいかなかったので。
+  const unsetCurrentBook = () => {
+    setCurrentBook(null);
+  }
 
   // 本の更新
   const updateBook = (editedBook: Book) => {
@@ -141,7 +146,7 @@ export const App = () => {
           updateBook={updateBook}
           deleteBook={deleteBook}
           open={Boolean(currentBook)}
-          onClose={handleCurrentBook}
+          onClose={unsetCurrentBook}
         />
       )}
       <MainFAB
