@@ -1,8 +1,6 @@
 import { useRef, useState } from "react";
 import { GlobalStyles } from "@mui/material";
-import { useForm, SubmitHandler } from "react-hook-form"
 
-import { FormDialog } from "./components/FormDialog";
 import { ToolBar } from "./components/ToolBar";
 import { MainFAB } from "./components/MainFAB";
 import { Shelf } from "./components/Shelf";
@@ -38,24 +36,9 @@ export const App = () => {
   // const [searchOpen, setSearchOpen] = useState<boolean>(false); // 検索フォームが開いているか
   const [moreToolOpen, setMoreToolOpen] = useState<boolean>(false); // さらなるツールが開いているか
   const anchorEl = useRef<HTMLButtonElement>(null);
-  const [newBookDialogOpen, setNewBookDialogOpen] = useState<boolean>(false); // 本の登録ダイアログが開いているか
   const [layout, setLayout] = useState<Layout>("cover&info"); // 本のレイアウトの種類
   const [currentBook, setCurrentBook] = useState<Book | null>(dummyBooks[0]);  // 現在開いている本
   // const [selectedBook, setSelectedBook] = useState<Map>([]); // 選択中の本
-
-  // 入力フォーム管理用react-hook-form変数
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },// 他にも便利そうなのがある
-  } = useForm<Book>({
-    defaultValues: {},
-  });
-  const onSubmit: SubmitHandler<Book> = (newBook) => {
-    console.log("submitted " + JSON.stringify(newBook));
-    setBooks((books) => [newBook, ...books]);
-  };
 
   // ハンドリング関数
   // サイドバーをトグル
@@ -108,7 +91,6 @@ export const App = () => {
   };
 
 
-  console.log(watch("title" as "id"));
   console.log(books.filter((book) => book.id !== "1000"));
 
 
@@ -136,14 +118,6 @@ export const App = () => {
         anchorEl={anchorEl}
         handleLayout={handleChangeLayout}
       />
-      {/* <FormDialog
-        dialogOpen={newBookDialogOpen}
-        onDialogClose={handleToggleNewBookDialog}
-        register={register}
-        handleSubmit={handleSubmit}
-        errors={errors}
-        onSubmit={onSubmit}
-      /> */}
       {currentBook != null && (
         <BookDialog
           book={currentBook}
