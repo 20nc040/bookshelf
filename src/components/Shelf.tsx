@@ -1,10 +1,11 @@
-import { Card, CardContent, CardMedia, Container, Grid, styled, Typography } from "@mui/material";
+import { Card, CardActionArea, CardContent, CardMedia, Container, Grid, styled, Typography } from "@mui/material";
 import { Book } from "../Book";
 import { Layout } from "../Layout";
 
 type Props = {
   books: Book[];
   layout: Layout;
+  handleCurrentBook: (newBook: Book) => void;
 };
 
 const BookCard = styled(Card)({
@@ -48,18 +49,19 @@ const BookAuthor = styled(Typography)({
 });
 
 
-export const Shelf = ({ books, layout }: Props) => {
+export const Shelf = ({ books, layout, handleCurrentBook }: Props) => {
 
   return layout === "cover" ? (
     <Grid container alignItems="center" justifyContent="center" spacing={1} marginTop="12px" padding="2px">
       {books.map((book) => {
         return (
-          <Grid item xs={6} sm={3} md={2} xl={1}>
+          <Grid item xs={6} sm={3} md={2} xl={1} key={book.id}>
             <Card>
               <BookCoverFull
                 component="img"
                 src={book.coverPath}
                 alt="表紙"
+                onClick={() => handleCurrentBook(book)}
               />
             </Card>
           </Grid>
@@ -72,19 +74,21 @@ export const Shelf = ({ books, layout }: Props) => {
     }}>
       {books.map((book) => {
         return layout === "cover&info" ? (
-          <BookCard>
-            <BookCover
-              component="img"
-              src={book.coverPath}
-              alt="表紙"
-            />
-            <BookInfo>
-              <BookTitle variant="subtitle1" gutterBottom>{book.title}</BookTitle>
-              <BookAuthor variant="subtitle2">作者, 出版社, 発行年</BookAuthor>
-            </BookInfo>
-          </BookCard>
+          <CardActionArea onClick={() => handleCurrentBook(book)}>
+            <BookCard key={book.id} >
+              <BookCover
+                component="img"
+                src={book.coverPath}
+                alt="表紙"
+              />
+              <BookInfo>
+                <BookTitle variant="subtitle1" gutterBottom>{book.title}</BookTitle>
+                <BookAuthor variant="subtitle2">作者, 出版社, 発行年</BookAuthor>
+              </BookInfo>
+            </BookCard>
+          </CardActionArea>
         ) : (
-          <BookCard>
+          <BookCard key={book.id} onClick={() => handleCurrentBook(book)}>
             <BookInfo>
               <BookTitle variant="subtitle1" gutterBottom>{book.title}</BookTitle>
               <BookAuthor variant="subtitle2">作者, 出版社, 発行年</BookAuthor>

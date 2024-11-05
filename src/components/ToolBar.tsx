@@ -9,7 +9,7 @@ type Props = {
 }
 
 export const ToolBar = ({ onClickSideBar, onClickMoreTool, buttonRef }: Props) => (
-  <AppBar position="static">
+  <AppBar position="sticky">
     <Toolbar>
 
       {/* サイドバー用ボタン */}

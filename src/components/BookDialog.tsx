@@ -13,17 +13,18 @@ type Props = {
 
 export const BookDialog = ({ book, updateBook, deleteBook, open, onClose }: Props) => {
 
-  const { register, handleSubmit, reset, formState: { errors }, } = useForm<Book>({ defaultValues: book });
+  const { register, handleSubmit, setValue, reset, formState: { errors }, } = useForm<Book>({ defaultValues: book });
   const onDelete = () => {
     deleteBook(book.id);
     onClose();
   };
   const onSubmit: SubmitHandler<Book> = (editedBook: Book) => {
     updateBook(editedBook);
+    onClose();
   };
 
   return (
-    <Dialog open={open} onClose={onClose} >
+    <Dialog open={open} onClose={onClose} fullWidth>
       <DialogTitle>{book.title}</DialogTitle>
       <form>
         <Box
@@ -36,6 +37,8 @@ export const BookDialog = ({ book, updateBook, deleteBook, open, onClose }: Prop
         <InputBox
           label="ISBN"
           formRegisterReturn={register("isbn", { required: "ISBNを入力してください" })}
+          fieldName="isbn"
+          setValue={setValue}
           errorsDiv={
             errors.isbn && (<Alert severity="error">
               {errors.isbn.message}
@@ -46,41 +49,59 @@ export const BookDialog = ({ book, updateBook, deleteBook, open, onClose }: Prop
         <InputBox
           label="本のタイトル"
           formRegisterReturn={register("title", { required: "本のタイトルを入力してください" })}
+          fieldName="title"
+          setValue={setValue}
           errorsDiv={
             errors.title && (<Alert severity="error">
               {errors.title.message}
             </Alert>
             )
           }
+          multiline
         />
         <InputBox
-          label="著者(「,」区切り)"
+          label="著者 カンマ区切り( , )"
           formRegisterReturn={register("authors")}
+          fieldName="authors"
+          setValue={setValue}
+          multiline
         />
         <InputBox
           label="出版社"
           formRegisterReturn={register("publisher")}
+          fieldName="publisher"
+          setValue={setValue}
         />
         <InputBox
           label="出版日"
           formRegisterReturn={register("publishedDate")}
+          fieldName="publishedDate"
+          setValue={setValue}
         />
         <InputBox
           label="メモ"
           formRegisterReturn={register("note")}
+          fieldName="note"
+          setValue={setValue}
+          multiline
         />
         <InputBox
-          label="タグ"
+          label="タグ カンマ区切り( , )"
           formRegisterReturn={register("tags")}
+          fieldName="tags"
+          setValue={setValue}
+          multiline
         />
       </form>
       <DialogActions>
         <Button onClick={() => onDelete()}>
           削除
         </Button>
+        <div style={{ flexGrow: 1 }} />
         <Button onClick={() => reset()}>
-          初期化
+          編集取消
         </Button>
+        <div style={{ flexGrow: 1 }} />
         <Button onClick={handleSubmit(onSubmit)}>
           保存
         </Button>

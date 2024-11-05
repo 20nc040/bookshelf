@@ -1,11 +1,15 @@
-import { Box, createTheme, IconButton, /*InputAdornment,*/ TextField, ThemeProvider } from "@mui/material";
+import { Box, createTheme, IconButton, InputAdornment, TextField, ThemeProvider } from "@mui/material";
 import Icon from "@mui/material/Icon";
-import { UseFormRegisterReturn } from "react-hook-form";
+import { UseFormRegisterReturn, UseFormSetValue } from "react-hook-form";
+import { Book } from "../Book";
 
 type Props = {
   label: string;
   formRegisterReturn: UseFormRegisterReturn;
+  fieldName: keyof Book;
+  setValue: UseFormSetValue<Book>;
   errorsDiv?: JSX.Element | undefined;
+  multiline?: boolean;
   scannable?: boolean;
 };
 
@@ -24,18 +28,20 @@ const compressedTextField = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          paddingRight: 0
+          paddingRight: 0,
+          paddingTop: 4,
+          paddingBottom: 4,
         },
         input: {
           paddingTop: 4,
           paddingBottom: 4,
         }
       }
-    }
+    },
   }
 });
 
-export const InputBox = ({ label, formRegisterReturn, errorsDiv, scannable }: Props) => {
+export const InputBox = ({ label, formRegisterReturn, fieldName, setValue, errorsDiv, multiline, scannable, }: Props) => {
   return (
     <Box>
       <Box
@@ -47,18 +53,21 @@ export const InputBox = ({ label, formRegisterReturn, errorsDiv, scannable }: Pr
           <TextField
             label={label}
             {...formRegisterReturn}
-            // InputProps={{
-            //   endAdornment:
-            //     <InputAdornment position="end">
-            //       <IconButton
-            //         sx={{
-            //           padding: 0.25
-            //         }}
-            //       >
-            //         <Icon>clear</Icon>
-            //       </IconButton>
-            //     </InputAdornment>
-            // }}
+            InputProps={{
+              endAdornment:
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setValue(fieldName, "")}
+                    sx={{
+                      padding: 0.25
+                    }}
+                  >
+                    <Icon>clear</Icon>
+                  </IconButton>
+                </InputAdornment>
+            }}
+            {...(multiline && { multiline })}
+            maxRows="3"
             sx={{ flexGrow: 1 }}
           />
         </ThemeProvider >

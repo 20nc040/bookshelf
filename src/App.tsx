@@ -11,6 +11,7 @@ import { Book } from "./Book";
 import { Layout } from "./Layout";
 import { MoreTool } from "./components/MoreTool";
 import { BookDialog } from "./components/BookDialog";
+import { generateId } from "./util/generateId";
 
 export const App = () => {
 
@@ -67,15 +68,16 @@ export const App = () => {
   };
   // 登録ダイアログをトグル
   const handleToggleNewBookDialog = () => {
-    setNewBookDialogOpen((isOpen) => !isOpen);
+    // setNewBookDialogOpen((isOpen) => !isOpen);
+    setCurrentBook({ id: generateId(), isbn: "", title: "新しい本" })
   };
   // レイアウトを変更
   const handleChangeLayout = (newLayout: Layout) => {
     setLayout(newLayout);
   };
   // 現在の本を管理
-  const handleCurrentBook = (newBook?: Book) => {
-    setCurrentBook(newBook ? newBook : null); // newBookがundefinedだったらnullを与えたい
+  const handleCurrentBook = (newBook: Book) => {
+    setCurrentBook(newBook); // newBookがundefinedだったらnullを与えたい
   };
   // 現在の本をnullに変更
   // handleCurrentBookをBookDialogのonCloseとして渡してもうまくいかなかったので。
@@ -134,14 +136,14 @@ export const App = () => {
         anchorEl={anchorEl}
         handleLayout={handleChangeLayout}
       />
-      <FormDialog
+      {/* <FormDialog
         dialogOpen={newBookDialogOpen}
         onDialogClose={handleToggleNewBookDialog}
         register={register}
         handleSubmit={handleSubmit}
         errors={errors}
         onSubmit={onSubmit}
-      />
+      /> */}
       {currentBook != null && (
         <BookDialog
           book={currentBook}
@@ -157,6 +159,7 @@ export const App = () => {
       <Shelf
         books={books}
         layout={layout}
+        handleCurrentBook={handleCurrentBook}
       />
       <p style={{ overflowWrap: "break-word" }}>
         {layout + "\n"}
