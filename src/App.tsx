@@ -16,7 +16,7 @@ export const App = () => {
 
   // データ管理用React変数
   const [books, setBooks] = useState<Book[]>([]); // 本の一覧
-  // const [shelf, setShelf] = useState
+  const [shelves, setShelves] = useState<Set<string>>(new Set(["全ての本", "dummy"]));  // 本棚の一覧
 
   // 保存済みデータの読み込み
   const [dummyDataError, setDummyDataError] = useState<string | null>(null);
@@ -29,7 +29,7 @@ export const App = () => {
         setDummyDataError("ダミーデータの読み込みに失敗");
       }
     };
-    fetchDummy();
+    // fetchDummy();
   }, []);
   if (dummyDataError) {
     return <div>{dummyDataError}</div>
@@ -42,6 +42,7 @@ export const App = () => {
   const anchorEl = useRef<HTMLButtonElement>(null);
   const [layout, setLayout] = useState<Layout>("cover&info"); // 本のレイアウトの種類
   const [currentBook, setCurrentBook] = useState<Book | null>();  // 現在開いている本
+  const [currentShelf, setCurrentShelf] = useState<string>("全ての本");  // 現在開いている本棚
   // const [selectedBook, setSelectedBook] = useState<Map>([]); // 選択中の本
 
   // ハンドリング関数
@@ -108,6 +109,9 @@ export const App = () => {
         }
       }} />
       <ToolBar
+        shelves={shelves}
+        currentShelf={currentShelf}
+        setCurrentShelf={setCurrentShelf}
         onClickSideBar={handleToggleSideBar}
         onClickMoreTool={handleMoreToolOpen}
         buttonRef={anchorEl}
@@ -141,6 +145,7 @@ export const App = () => {
       />
       <p style={{ overflowWrap: "break-word" }}>
         {layout + "\n"}
+        {currentShelf + ":"}{shelves}{"\n"}
         {JSON.stringify(books)}
       </p>
     </>

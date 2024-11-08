@@ -2,10 +2,10 @@ import { fetchBookWithGoogleBooksAPI } from "../net/GoogleAPI";
 
 export const getDummyData = async () => {
   const dummy = [
-    await fetchBookWithGoogleBooksAPI("9784297129163"),
+    // await fetchBookWithGoogleBooksAPI("9784297129163"),
     await fetchBookWithGoogleBooksAPI("9784422311074"),
-    await fetchBookWithGoogleBooksAPI("9784000801317"),
-    await fetchBookWithGoogleBooksAPI("9784641104846"),
+    // await fetchBookWithGoogleBooksAPI("9784000801317"),
+    // await fetchBookWithGoogleBooksAPI("9784641104846"),
     await fetchBookWithGoogleBooksAPI("9784103549512"),
     await fetchBookWithGoogleBooksAPI("9784480020727"),
     await fetchBookWithGoogleBooksAPI("9784088518312"),
