@@ -47,6 +47,7 @@ export const BookDialog = ({ book, updateBook, deleteBook, addShelf, open, onClo
             </Alert>)
           }
           scannable
+          actionable
         />
         <InputBox
           label="本のタイトル"

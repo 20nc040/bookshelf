@@ -11,6 +11,8 @@ type Props = {
   errorsDiv?: JSX.Element | undefined;
   multiline?: boolean;
   scannable?: boolean;
+  actionable?: boolean;
+  action?: () => void;
 };
 
 const compressedTextField = createTheme({
@@ -41,7 +43,7 @@ const compressedTextField = createTheme({
   }
 });
 
-export const InputBox = ({ label, formRegisterReturn, fieldName, setValue, errorsDiv, multiline, scannable, }: Props) => {
+export const InputBox = ({ label, formRegisterReturn, fieldName, setValue, errorsDiv, multiline, scannable, actionable, action }: Props) => {
   return (
     <Box>
       <Box
@@ -79,6 +81,17 @@ export const InputBox = ({ label, formRegisterReturn, fieldName, setValue, error
             }}
           >
             <Icon>qr_code_scanner</Icon>
+          </IconButton>
+        )}
+        {actionable && (
+          <IconButton
+            color="info"
+            sx={{
+              padding: 0.25,
+            }}
+            onClick={action}
+          >
+            <Icon>subdirectory_arrow_left</Icon>
           </IconButton>
         )}
       </Box>

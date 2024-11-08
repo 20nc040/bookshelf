@@ -11,6 +11,7 @@ import { MoreTool } from "./components/MoreTool";
 import { BookDialog } from "./components/BookDialog";
 import { generateId } from "./util/generateId";
 import { getDummyData } from "./util/getDummyData";
+import { useAsync } from "react-use";
 
 export const App = () => {
 
@@ -19,21 +20,16 @@ export const App = () => {
   const [shelves, setShelves] = useState<Set<string>>(new Set(["全ての本", "dummy"]));  // 本棚の一覧
 
   // 保存済みデータの読み込み
-  const [dummyDataError, setDummyDataError] = useState<string | null>(null);
-  useEffect(() => {
-    const fetchDummy = async () => {
-      try {
-        const data = await getDummyData();
-        setBooks(data);
-      } catch (error) {
-        setDummyDataError("ダミーデータの読み込みに失敗");
-      }
-    };
-    // fetchDummy();
-  }, []);
-  if (dummyDataError) {
-    return <div>{dummyDataError}</div>
-  }
+  // const dummyDataState = useAsync(async () => {
+  //   const data = await getDummyData();
+  //   setBooks(data);
+  // }, []);
+  // if (dummyDataState.error) {
+  //   return (
+  //     <div>{dummyDataState.error.message}</div>
+  //   )
+  // }
+
 
   // 状態管理用React変数
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(false); // サイドバーが開いているか
