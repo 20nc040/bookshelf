@@ -142,6 +142,7 @@ export const App = () => {
         books={books}
         layout={layout}
         handleCurrentBook={handleCurrentBook}
+        currentShelf={currentShelf}
       />
       <p style={{ overflowWrap: "break-word" }}>
         {layout + "\n"}

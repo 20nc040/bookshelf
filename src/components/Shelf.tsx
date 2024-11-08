@@ -6,6 +6,7 @@ type Props = {
   books: Book[];
   layout: Layout;
   handleCurrentBook: (newBook: Book) => void;
+  currentShelf: string;
 };
 
 const BookCard = styled(Card)({
@@ -49,11 +50,13 @@ const BookAuthor = styled(Typography)({
 });
 
 
-export const Shelf = ({ books, layout, handleCurrentBook }: Props) => {
+export const Shelf = ({ books, layout, handleCurrentBook, currentShelf }: Props) => {
+
+  const filteredBooks = books.filter((book) => currentShelf === "全ての本" || book.tags_set?.has(currentShelf));
 
   return layout === "cover" ? (
     <Grid container alignItems="center" justifyContent="center" spacing={1} marginTop="12px" padding="2px">
-      {books.map((book) => {
+      {filteredBooks.map((book) => {
         return (
           <Grid item xs={6} sm={3} md={2} xl={1} key={book.id}>
             <Card>
@@ -72,7 +75,7 @@ export const Shelf = ({ books, layout, handleCurrentBook }: Props) => {
     <Container sx={{
       marginTop: "12px",
     }}>
-      {books.map((book) => {
+      {filteredBooks.map((book) => {
         return layout === "cover&info" ? (
           <CardActionArea onClick={() => handleCurrentBook(book)}>
             <BookCard key={book.id} >

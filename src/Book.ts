@@ -7,5 +7,6 @@ export type Book = {
   publisher?: string;
   publishedDate?: string;
   note?: string;
-  tags?: string[];
+  tags?: string;
+  tags_set?: Set<string>;
 };
