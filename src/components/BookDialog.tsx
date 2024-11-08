@@ -2,6 +2,8 @@ import { Alert, Box, Button, Dialog, DialogActions, DialogTitle, } from "@mui/ma
 import { Book, getTaggedBook } from "../Book";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { InputBox } from "./InputBox";
+import { useAsyncFn } from "react-use";
+import { fetchBookWithGoogleBooksAPI } from "../net/GoogleAPI";
 
 type Props = {
   book: Book;
@@ -14,7 +16,7 @@ type Props = {
 
 export const BookDialog = ({ book, updateBook, deleteBook, addShelf, open, onClose }: Props) => {
 
-  const { register, handleSubmit, setValue, reset, formState: { errors }, } = useForm<Book>({ defaultValues: book });
+  const { register, handleSubmit, setValue, getValues, reset, formState: { errors }, } = useForm<Book>({ defaultValues: book });
   const onDelete = () => {
     deleteBook(book.id);
     onClose();
@@ -24,6 +26,31 @@ export const BookDialog = ({ book, updateBook, deleteBook, addShelf, open, onClo
     updateBook(editedBook);
     onClose();
   };
+  const [fetchState, fetchBook] = useAsyncFn(async () => {
+    const isbn = getValues("isbn");
+    const data = await fetchBookWithGoogleBooksAPI(isbn);
+    if (data == null) {
+      return;
+    }
+    if (getValues("title") === "新しい本" || getValues("title") === "") {
+      setValue("title", data.title);
+    }
+    if (data.coverPath) {
+      setValue("coverPath", data.coverPath);
+    }
+    if (getValues("authors") === "" && data.authors) {
+      setValue("authors", data.authors);
+    }
+    if (getValues("publisher") === "" && data.publisher) {
+      setValue("publisher", data.publisher);
+    }
+    if (getValues("publishedDate") === "" && data.publishedDate) {
+      setValue("publishedDate", data.publishedDate);
+    }
+    if (getValues("note") === "" && data.note) {
+      setValue("note", data.note);
+    }
+  }, [])
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
@@ -48,6 +75,8 @@ export const BookDialog = ({ book, updateBook, deleteBook, addShelf, open, onClo
           }
           scannable
           actionable
+          actionDisable={fetchState.loading}
+          action={fetchBook}
         />
         <InputBox
           label="本のタイトル"
@@ -109,26 +138,6 @@ export const BookDialog = ({ book, updateBook, deleteBook, addShelf, open, onClo
           保存
         </Button>
       </DialogActions>
-      {/* <DialogContent>
-        <img src={book.coverPath} alt={`${book.title}の表紙`} />
-        <TextField
-          label="著者"
-          // value={}
-          onChange={handleSubmit(onSubmit)}
-          fullWidth
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button>
-          削除
-        </Button>
-        <Button onClick={() => reset()}>
-          初期化
-        </Button>
-        <Button >
-          保存
-        </Button>
-      </DialogActions> */}
     </Dialog >
   )
 } 

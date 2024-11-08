@@ -12,6 +12,7 @@ type Props = {
   multiline?: boolean;
   scannable?: boolean;
   actionable?: boolean;
+  actionDisable?: boolean;
   action?: () => void;
 };
 
@@ -43,7 +44,12 @@ const compressedTextField = createTheme({
   }
 });
 
-export const InputBox = ({ label, formRegisterReturn, fieldName, setValue, errorsDiv, multiline, scannable, actionable, action }: Props) => {
+export const InputBox = ({ label, formRegisterReturn, fieldName, setValue, errorsDiv, multiline, scannable, actionable, actionDisable, action }: Props) => {
+
+  const onClickAction = () => {
+    !actionDisable && action != undefined && action();
+  };
+
   return (
     <Box>
       <Box
@@ -85,11 +91,11 @@ export const InputBox = ({ label, formRegisterReturn, fieldName, setValue, error
         )}
         {actionable && (
           <IconButton
-            color="info"
+            color={actionDisable ? "warning" : "info"}
             sx={{
               padding: 0.25,
             }}
-            onClick={action}
+            onClick={onClickAction}
           >
             <Icon>subdirectory_arrow_left</Icon>
           </IconButton>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { GlobalStyles } from "@mui/material";
 
 import { ToolBar } from "./components/ToolBar";
@@ -20,15 +20,15 @@ export const App = () => {
   const [shelves, setShelves] = useState<Set<string>>(new Set(["全ての本", "dummy"]));  // 本棚の一覧
 
   // 保存済みデータの読み込み
-  // const dummyDataState = useAsync(async () => {
-  //   const data = await getDummyData();
-  //   setBooks(data);
-  // }, []);
-  // if (dummyDataState.error) {
-  //   return (
-  //     <div>{dummyDataState.error.message}</div>
-  //   )
-  // }
+  const dummyDataState = useAsync(async () => {
+    // const data = await getDummyData();
+    // setBooks(data);
+  }, []);
+  if (dummyDataState.error) {
+    return (
+      <div>{dummyDataState.error.message}</div>
+    )
+  }
 
 
   // 状態管理用React変数
