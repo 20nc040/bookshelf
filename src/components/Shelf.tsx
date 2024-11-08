@@ -83,7 +83,7 @@ export const Shelf = ({ books, layout, handleCurrentBook }: Props) => {
               />
               <BookInfo>
                 <BookTitle variant="subtitle1" gutterBottom>{book.title}</BookTitle>
-                <BookAuthor variant="subtitle2">作者, 出版社, 発行年</BookAuthor>
+                <BookAuthor variant="subtitle2">{book.authors ? book.authors : "" + book.publisher ? book.publisher : "" + book.publishedDate ? book.publishedDate : ""}</BookAuthor>
               </BookInfo>
             </BookCard>
           </CardActionArea>
@@ -91,7 +91,7 @@ export const Shelf = ({ books, layout, handleCurrentBook }: Props) => {
           <BookCard key={book.id} onClick={() => handleCurrentBook(book)}>
             <BookInfo>
               <BookTitle variant="subtitle1" gutterBottom>{book.title}</BookTitle>
-              <BookAuthor variant="subtitle2">作者, 出版社, 発行年</BookAuthor>
+              <BookAuthor variant="subtitle2">{book.authors ? book.authors : "" + book.publisher ? book.publisher : "" + book.publishedDate ? book.publishedDate : ""}</BookAuthor>
             </BookInfo>
           </BookCard>
         )
