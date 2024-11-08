@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Dialog, DialogActions, DialogTitle, } from "@mui/material";
-import { Book } from "../Book";
+import { Book, getTaggedBook } from "../Book";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { InputBox } from "./InputBox";
 
@@ -7,11 +7,12 @@ type Props = {
   book: Book;
   updateBook: (editedBook: Book) => void;
   deleteBook: (deletingBookId: string) => void;
+  addShelf: (newTag: string) => void;
   open: boolean;
   onClose: () => void;
 };
 
-export const BookDialog = ({ book, updateBook, deleteBook, open, onClose }: Props) => {
+export const BookDialog = ({ book, updateBook, deleteBook, addShelf, open, onClose }: Props) => {
 
   const { register, handleSubmit, setValue, reset, formState: { errors }, } = useForm<Book>({ defaultValues: book });
   const onDelete = () => {
@@ -19,6 +20,7 @@ export const BookDialog = ({ book, updateBook, deleteBook, open, onClose }: Prop
     onClose();
   };
   const onSubmit: SubmitHandler<Book> = (editedBook: Book) => {
+    editedBook = getTaggedBook(editedBook, addShelf);
     updateBook(editedBook);
     onClose();
   };

@@ -1,6 +1,6 @@
 import { AppBar, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Toolbar } from "@mui/material";
 import Icon from "@mui/material/Icon";
-import React, { RefObject } from "react";
+import { RefObject } from "react";
 
 type Props = {
   shelves: Set<string>;

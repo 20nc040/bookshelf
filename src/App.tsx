@@ -75,9 +75,11 @@ export const App = () => {
 
   // 本の更新
   const updateBook = (editedBook: Book) => {
+    let count = 0;
     setBooks((books) => {
       const updatedBooks = books.map((book) => {
         if (book.id === editedBook.id) {
+          count++;
           return editedBook;
         } else {
           return book;
@@ -85,6 +87,10 @@ export const App = () => {
       });
       return updatedBooks;
     });
+    if (count === 0) {
+      console.log(`新しい本${editedBook}を追加`)
+      setBooks((books) => [editedBook, ...books])
+    }
   };
   // 本の削除
   const deleteBook = (deletingBookId: string) => {
@@ -93,6 +99,13 @@ export const App = () => {
       return updatedBooks;
     });
     console.log(`ID:${deletingBookId}の本を削除`);
+  };
+  // 本棚の追加
+  const addShelf = (newTag: string) => {
+    setShelves((shelves) => {
+      shelves.add(newTag);
+      return shelves;
+    });
   };
 
 
@@ -131,6 +144,7 @@ export const App = () => {
           book={currentBook}
           updateBook={updateBook}
           deleteBook={deleteBook}
+          addShelf={addShelf}
           open={Boolean(currentBook)}
           onClose={unsetCurrentBook}
         />
