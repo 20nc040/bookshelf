@@ -40,6 +40,8 @@ export const App = () => {
   const [currentBook, setCurrentBook] = useState<Book | null>();  // 現在開いている本
   const [currentShelf, setCurrentShelf] = useState<string>("全ての本");  // 現在開いている本棚
   // const [selectedBook, setSelectedBook] = useState<Map>([]); // 選択中の本
+  const [autoTaggingAuthors, setAutoTaggingAuthors] = useState<boolean>(false);  // 本登録時に著者を自動でタグ付けするか
+  const [autoTaggingPublisher, setAutoTaggingPublisher] = useState<boolean>(false);  // 本登録時に発行社を自動でタグ付けするか
 
   // ハンドリング関数
   // サイドバーをトグル
@@ -67,7 +69,15 @@ export const App = () => {
   // handleCurrentBookをBookDialogのonCloseとして渡してもうまくいかなかったので。
   const unsetCurrentBook = () => {
     setCurrentBook(null);
-  }
+  };
+  // 著者の自動タグ付けをトグル
+  const handleAutoTaggingAuthors = () => {
+    setAutoTaggingAuthors((current) => !current);
+  };
+  // 発行社の自動タグ付けをトグル
+  const handleAutoTaggingPublisher = () => {
+    setAutoTaggingPublisher((current) => !current);
+  };
 
   // 本の更新
   const updateBook = (editedBook: Book) => {
@@ -128,6 +138,10 @@ export const App = () => {
       <SideBar
         sideBarOpen={sideBarOpen}
         onCloseSideBar={handleToggleSideBar}
+        autoTaggingAuthors={autoTaggingAuthors}
+        handleAutoTaggingAuthors={handleAutoTaggingAuthors}
+        autoTaggingPublisher={autoTaggingPublisher}
+        handleAutoTaggingPublisher={handleAutoTaggingPublisher}
       />
       <MoreTool
         open={moreToolOpen}
@@ -140,6 +154,8 @@ export const App = () => {
           book={currentBook}
           updateBook={updateBook}
           deleteBook={deleteBook}
+          autoTaggingAuthors={autoTaggingAuthors}
+          autoTaggingPublisher={autoTaggingPublisher}
           addShelf={addShelf}
           open={Boolean(currentBook)}
           onClose={unsetCurrentBook}

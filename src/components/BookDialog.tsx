@@ -11,12 +11,14 @@ type Props = {
   book: Book;
   updateBook: (editedBook: Book) => void;
   deleteBook: (deletingBookId: string) => void;
+  autoTaggingAuthors: boolean;
+  autoTaggingPublisher: boolean;
   addShelf: (newTag: string) => void;
   open: boolean;
   onClose: () => void;
 };
 
-export const BookDialog = ({ book, updateBook, deleteBook, addShelf, open, onClose }: Props) => {
+export const BookDialog = ({ book, updateBook, deleteBook, autoTaggingAuthors, autoTaggingPublisher, addShelf, open, onClose }: Props) => {
 
   const { register, handleSubmit, setValue, getValues, reset, formState: { errors }, } = useForm<Book>({ defaultValues: book });
   const onDelete = () => {
@@ -24,7 +26,7 @@ export const BookDialog = ({ book, updateBook, deleteBook, addShelf, open, onClo
     onClose();
   };
   const onSubmit: SubmitHandler<Book> = (editedBook: Book) => {
-    editedBook = getTaggedBook(editedBook, addShelf);
+    editedBook = getTaggedBook(editedBook, autoTaggingAuthors, autoTaggingPublisher, addShelf);
     updateBook(editedBook);
     onClose();
   };

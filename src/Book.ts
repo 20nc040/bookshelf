@@ -11,12 +11,18 @@ export type Book = {
   tags_set?: Set<string>;
 };
 
-export function getTaggedBook(book: Book, addShelf: (tag: string) => void): Book {
+export function getTaggedBook(book: Book, taggingAuthors: boolean, taggingPublisher: boolean, addShelf: (tag: string) => void): Book {
   if (book.tags != null) {
-    const tags_list = book.tags.trim().split(",");
-    tags_list.forEach((tag) => tag.trim());
-    book.tags_set = new Set(tags_list);
-    tags_list.forEach((tag) => addShelf(tag));
+    const tagsList = book.tags.trim().split(",");
+    if (taggingAuthors && book.authors != null) {
+      tagsList.push(...book.authors.trim().split(","));
+    }
+    if (taggingPublisher && book.publisher != null) {
+      tagsList.push(...book.publisher.trim().split(","));
+    }
+    tagsList.forEach((tag) => tag.trim());
+    book.tags_set = new Set(tagsList);
+    tagsList.forEach((tag) => addShelf(tag));
   }
   return book;
 }
