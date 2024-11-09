@@ -4,6 +4,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { InputBox } from "./InputBox";
 import { useAsyncFn } from "react-use";
 import { fetchBookWithGoogleBooksAPI } from "../net/GoogleAPI";
+import { useState } from "react";
+import BarcodeScannerComponent from "react-qr-barcode-scanner";
 
 type Props = {
   book: Book;
@@ -52,6 +54,36 @@ export const BookDialog = ({ book, updateBook, deleteBook, addShelf, open, onClo
     }
   }, [])
 
+  // ISBNスキャナー
+  const [scannerOpen, setScannerOpen] = useState<boolean>(false);
+  const [scannedISBN, setScannedISBN] = useState<string>("");
+  const handleScannerOpen = () => {
+    setScannerOpen((isOpen) => !isOpen);
+  }
+
+  if (scannerOpen) {
+    return (
+      <Dialog open={scannerOpen} onClose={handleScannerOpen}>
+        <BarcodeScannerComponent
+          width="100%"
+          height="auto"
+          videoConstraints={{
+            width: { ideal: 1920 },
+            height: { ideal: 1080 }
+          }}
+          onUpdate={(err, result) => {
+            if (result) {
+              const isbn = result.getText();
+              console.log(`ISBN:${isbn}を読み込み`)
+              setScannedISBN(isbn);
+              setValue("isbn", scannedISBN);
+              handleScannerOpen();
+            }
+          }}
+        />
+      </Dialog>
+    )
+  }
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
       <DialogTitle>{book.title}</DialogTitle>
@@ -74,6 +106,7 @@ export const BookDialog = ({ book, updateBook, deleteBook, addShelf, open, onClo
             </Alert>)
           }
           scannable
+          scan={handleScannerOpen}
           actionable
           actionDisable={fetchState.loading}
           action={fetchBook}

@@ -1,17 +1,17 @@
 import { useRef, useState } from "react";
 import { GlobalStyles } from "@mui/material";
+import { useAsync } from "react-use";
 
+import { Book } from "./Book";
+import { Layout } from "./Layout";
 import { ToolBar } from "./components/ToolBar";
 import { MainFAB } from "./components/MainFAB";
 import { Shelf } from "./components/Shelf";
 import { SideBar } from "./components/SideBar";
-import { Book } from "./Book";
-import { Layout } from "./Layout";
 import { MoreTool } from "./components/MoreTool";
 import { BookDialog } from "./components/BookDialog";
 import { generateId } from "./util/generateId";
-import { getDummyData } from "./util/getDummyData";
-import { useAsync } from "react-use";
+// import { getDummyData } from "./util/getDummyData";
 
 export const App = () => {
 
@@ -48,7 +48,7 @@ export const App = () => {
   };
   // さらなるツールをトグル
   const handleMoreToolOpen = () => {
-    setMoreToolOpen((isOpen) => !isOpen)
+    setMoreToolOpen((isOpen) => !isOpen);
   };
   // 登録ダイアログをトグル
   const handleToggleNewBookDialog = () => {

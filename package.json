@@ -14,8 +14,10 @@
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.21",
     "axios": "^1.7.7",
+    "quagga": "^0.6.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-qr-barcode-scanner": "^2.0.0",
     "react-use": "^17.5.1",
     "ulid": "^2.3.0"
   },
