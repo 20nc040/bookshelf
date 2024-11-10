@@ -11,7 +11,8 @@ import { SideBar } from "./components/SideBar";
 import { MoreTool } from "./components/MoreTool";
 import { BookDialog } from "./components/BookDialog";
 import { generateId } from "./util/generateId";
-// import { getDummyData } from "./util/getDummyData";
+import { SearchDialog } from "./components/SearchDialog";
+import { getDummyData } from "./util/getDummyData";
 
 export const App = () => {
 
@@ -21,8 +22,8 @@ export const App = () => {
 
   // 保存済みデータの読み込み
   const dummyDataState = useAsync(async () => {
-    // const data = await getDummyData();
-    // setBooks(data);
+    const data = await getDummyData();
+    setBooks(data);
   }, []);
   if (dummyDataState.error) {
     return (
@@ -33,13 +34,13 @@ export const App = () => {
 
   // 状態管理用React変数
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(false); // サイドバーが開いているか
-  // const [searchOpen, setSearchOpen] = useState<boolean>(false); // 検索フォームが開いているか
+  const [searchOpen, setSearchOpen] = useState<boolean>(false); // 検索フォームが開いているか
   const [moreToolOpen, setMoreToolOpen] = useState<boolean>(false); // さらなるツールが開いているか
   const anchorEl = useRef<HTMLButtonElement>(null);
   const [layout, setLayout] = useState<Layout>("cover&info"); // 本のレイアウトの種類
   const [currentBook, setCurrentBook] = useState<Book | null>();  // 現在開いている本
   const [currentShelf, setCurrentShelf] = useState<string>("全ての本");  // 現在開いている本棚
-  // const [selectedBook, setSelectedBook] = useState<Map>([]); // 選択中の本
+  // const [selectedBooks, setSelectedBooks] = useState<Map>([]); // 選択中の本たち
   const [autoTaggingAuthors, setAutoTaggingAuthors] = useState<boolean>(false);  // 本登録時に著者を自動でタグ付けするか
   const [autoTaggingPublisher, setAutoTaggingPublisher] = useState<boolean>(false);  // 本登録時に発行社を自動でタグ付けするか
 
@@ -48,13 +49,16 @@ export const App = () => {
   const handleToggleSideBar = () => {
     setSideBarOpen((isOpen) => !isOpen);
   };
+  // 検索ダイアログをトグル
+  const handleToggleSearchDialog = () => {
+    setSearchOpen((isOpen) => !isOpen);
+  };
   // さらなるツールをトグル
   const handleMoreToolOpen = () => {
     setMoreToolOpen((isOpen) => !isOpen);
   };
   // 登録ダイアログをトグル
   const handleToggleNewBookDialog = () => {
-    // setNewBookDialogOpen((isOpen) => !isOpen);
     setCurrentBook({ id: generateId(), isbn: "", title: "新しい本" })
   };
   // レイアウトを変更
@@ -132,6 +136,7 @@ export const App = () => {
         currentShelf={currentShelf}
         setCurrentShelf={setCurrentShelf}
         onClickSideBar={handleToggleSideBar}
+        onClickSearch={handleToggleSearchDialog}
         onClickMoreTool={handleMoreToolOpen}
         buttonRef={anchorEl}
       />
@@ -161,6 +166,12 @@ export const App = () => {
           onClose={unsetCurrentBook}
         />
       )}
+      <SearchDialog
+        open={searchOpen}
+        onClose={handleToggleSearchDialog}
+        books={books}
+        onSelect={handleCurrentBook}
+      />
       <MainFAB
         onClick={handleToggleNewBookDialog}
       />

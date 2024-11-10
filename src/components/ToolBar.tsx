@@ -7,11 +7,12 @@ type Props = {
   currentShelf: string;
   setCurrentShelf: (newShelf: string) => void;
   onClickSideBar: () => void;
+  onClickSearch: () => void;
   onClickMoreTool: () => void;
   buttonRef: RefObject<HTMLButtonElement>;
 }
 
-export const ToolBar = ({ shelves, currentShelf, setCurrentShelf, onClickSideBar, onClickMoreTool, buttonRef }: Props) => {
+export const ToolBar = ({ shelves, currentShelf, setCurrentShelf, onClickSideBar, onClickSearch, onClickMoreTool, buttonRef }: Props) => {
 
   const onChange = (e: SelectChangeEvent) => {
     setCurrentShelf(e.target.value as string);
@@ -58,6 +59,7 @@ export const ToolBar = ({ shelves, currentShelf, setCurrentShelf, onClickSideBar
           size="large"
           edge="start"
           sx={{ mr: 2 }}
+          onClick={onClickSearch}
         >
           <Icon>search</Icon>
         </IconButton>
