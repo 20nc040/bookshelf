@@ -117,6 +117,32 @@ export const App = () => {
       return shelves;
     });
   };
+  // 現在の本棚の削除
+  const deleteCurrentShelf = () => {
+    // 全ての本は削除できない
+    if (currentShelf === "全ての本") {
+      return;
+    }
+    // 現在の本棚を削除
+    setShelves((shelves) => {
+      shelves.delete(currentShelf);
+      return shelves;
+    });
+    // すべての本からタグを削除
+    setBooks((books) => {
+      const newBooks = books.map((book) => {
+        if (book.tags_set == null) {
+          return book;
+        }
+        book.tags_set.delete(currentShelf);
+        book.tags = Array.from(book.tags_set).join(",");
+        return book;
+      });
+      return newBooks;
+    })
+    // 本棚を変更
+    setCurrentShelf("全ての本");
+  }
 
 
   console.log(books.filter((book) => book.id !== "1000"));
@@ -147,6 +173,7 @@ export const App = () => {
         handleAutoTaggingAuthors={handleAutoTaggingAuthors}
         autoTaggingPublisher={autoTaggingPublisher}
         handleAutoTaggingPublisher={handleAutoTaggingPublisher}
+        deleteCurrentShelf={deleteCurrentShelf}
       />
       <MoreTool
         open={moreToolOpen}
