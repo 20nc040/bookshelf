@@ -28,10 +28,10 @@ export const App = () => {
   const [searchOpen, setSearchOpen] = useState<boolean>(false); // 検索フォームが開いているか
   const [moreToolOpen, setMoreToolOpen] = useState<boolean>(false); // さらなるツールが開いているか
   const anchorEl = useRef<HTMLButtonElement>(null); // さらなるツール用アンカー
+  const [sort, setSort] = useState<"new" | "old" | "abc" | "zyx">("new");  // 並べ替え順
   const [layout, setLayout] = useState<Layout>("cover&info"); // 本のレイアウトの種類
   const [currentBook, setCurrentBook] = useState<Book | null>();  // 現在開いている本
   const [currentShelf, setCurrentShelf] = useState<string>("全ての本");  // 現在開いている本棚
-  // const [selectedBooks, setSelectedBooks] = useState<Map>([]); // 選択中の本たち
   const [autoTaggingAuthors, setAutoTaggingAuthors] = useState<boolean>(false);  // 本登録時に著者を自動でタグ付けするか
   const [autoTaggingPublisher, setAutoTaggingPublisher] = useState<boolean>(false);  // 本登録時に発行社を自動でタグ付けするか
 
@@ -52,6 +52,34 @@ export const App = () => {
   const handleToggleNewBookDialog = () => {
     setCurrentBook({ id: generateId(), isbn: "", title: "新しい本" })
   };
+  // 並べ替え順を変更
+  const handleSort = (newSort: string) => {
+    if (newSort === "new") {
+      setBooks((books) => {
+        books.sort((a, b) => a.id < b.id ? 1 : -1);
+        return books;
+      });
+      setSort("new");
+    } else if (newSort === "old") {
+      setBooks((books) => {
+        books.sort((a, b) => a.id < b.id ? -1 : 1);
+        return books;
+      });
+      setSort("old");
+    } else if (newSort === "abc") {
+      setBooks((books) => {
+        books.sort((a, b) => a.title < b.title ? -1 : 1);
+        return books;
+      });
+      setSort("abc");
+    } else if (newSort === "zyx") {
+      setBooks((books) => {
+        books.sort((a, b) => a.title < b.title ? 1 : -1);
+        return books;
+      });
+      setSort("zyx");
+    }
+  }
   // レイアウトを変更
   const handleChangeLayout = (newLayout: Layout) => {
     setLayout(newLayout);
@@ -145,9 +173,6 @@ export const App = () => {
   }, [autoTaggingAuthors, autoTaggingPublisher]);
 
 
-  console.log(books.filter((book) => book.id !== "1000"));
-
-
   return (
     <>
       <GlobalStyles styles={{
@@ -181,6 +206,8 @@ export const App = () => {
         open={moreToolOpen}
         onClose={handleMoreToolOpen}
         anchorEl={anchorEl}
+        sort={sort}
+        handleSort={handleSort}
         handleLayout={handleChangeLayout}
       />
       {currentBook != null && (

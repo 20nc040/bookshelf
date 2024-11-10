@@ -1,4 +1,4 @@
-import { Divider, Icon, Menu, MenuItem, styled } from "@mui/material"
+import { Divider, Icon, Menu, MenuItem, styled, Typography } from "@mui/material"
 import { RefObject } from "react";
 import { Layout } from "../Layout";
 
@@ -6,6 +6,8 @@ type Props = {
   open: boolean;
   onClose: () => void;
   anchorEl: RefObject<HTMLButtonElement>;
+  sort: "new" | "old" | "abc" | "zyx";
+  handleSort: (newSort: string) => void;
   handleLayout: (newLayout: Layout) => void;
 }
 
@@ -15,7 +17,12 @@ const BoldDivider = styled(Divider)(() => ({
   }
 }));
 
-export const MoreTool = ({ open, onClose, anchorEl, handleLayout }: Props) => {
+export const MoreTool = ({ open, onClose, anchorEl, sort, handleSort, handleLayout }: Props) => {
+
+  const onClickSort = (newSort: string) => {
+    handleSort(newSort);
+  };
+
   const onClickCoverView = () => {
     handleLayout("cover");
   };
@@ -32,16 +39,14 @@ export const MoreTool = ({ open, onClose, anchorEl, handleLayout }: Props) => {
       onClose={onClose}
       anchorEl={anchorEl.current}
     >
-      <BoldDivider>選択</BoldDivider>
-      <MenuItem>
-        <Icon>done_all</Icon>
-        全てを選択
-      </MenuItem>
-      <MenuItem>
-        <Icon>check_box_outline_blank</Icon>
-        全選択解除
-      </MenuItem>
-      <BoldDivider>表示</BoldDivider>
+      <BoldDivider><Typography>並べ替え</Typography></BoldDivider>
+      {sort === "new" ?
+        <MenuItem onClick={() => onClickSort("old")}><Icon>arrow_downward</Icon>登録順</MenuItem> :
+        <MenuItem onClick={() => onClickSort("new")}><Icon>arrow_upward</Icon>登録逆順</MenuItem>}
+      {sort === "abc" ?
+        <MenuItem onClick={() => onClickSort("zyx")}><Icon>arrow_upward</Icon>文字種逆順</MenuItem> :
+        <MenuItem onClick={() => onClickSort("abc")}><Icon>arrow_downward</Icon>文字種順</MenuItem>}
+      <BoldDivider><Typography>表示</Typography></BoldDivider>
       <MenuItem
         onClick={onClickCoverView}
       >
