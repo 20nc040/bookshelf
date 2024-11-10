@@ -12,17 +12,22 @@ export type Book = {
 };
 
 export function getTaggedBook(book: Book, taggingAuthors: boolean, taggingPublisher: boolean, addShelf: (tag: string) => void): Book {
-  if (book.tags != null) {
-    const tagsList = book.tags.trim().split(",");
-    if (taggingAuthors && book.authors != null) {
-      tagsList.push(...book.authors.trim().split(","));
-    }
-    if (taggingPublisher && book.publisher != null) {
-      tagsList.push(...book.publisher.trim().split(","));
-    }
-    tagsList.forEach((tag) => tag.trim());
-    book.tags_set = new Set(tagsList);
-    tagsList.forEach((tag) => addShelf(tag));
+  if (book.tags == null) { book.tags = ""; }
+  const tagsList = book.tags.trim().split(",");
+  if (taggingAuthors && book.authors != null) {
+    tagsList.push(...book.authors.trim().split(","));
   }
+  if (taggingPublisher && book.publisher != null) {
+    tagsList.push(...book.publisher.trim().split(","));
+  }
+  tagsList.forEach((tag) => tag.trim());
+  book.tags_set = new Set(tagsList);
+  book.tags = tagsList.join(",")
+  tagsList.forEach((tag) => {
+    if (tag !== "") {
+      addShelf(tag);
+    }
+  });
+
   return book;
 }

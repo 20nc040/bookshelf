@@ -8,6 +8,8 @@ type Props = {
   handleAutoTaggingAuthors: () => void;
   autoTaggingPublisher: boolean;
   handleAutoTaggingPublisher: () => void;
+  trialDataLoading: boolean;
+  fetchTrialData: () => void;
   deleteCurrentShelf: () => void;
 };
 
@@ -18,21 +20,46 @@ export const SideBar = ({
   handleAutoTaggingAuthors,
   autoTaggingPublisher,
   handleAutoTaggingPublisher,
+  trialDataLoading,
+  fetchTrialData,
   deleteCurrentShelf,
 }: Props) => {
+  const [trialDataDialogOpen, setTrialDataDialogOpen] = useState<boolean>(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
 
+  // お試しデータ追加確認ダイアログを管理
+  const handleTrialDataDialogOpen = () => {
+    setTrialDataDialogOpen((isOpen) => !isOpen);
+  };
+  // お試しデータ追加
+  const onFetchTrialData = () => {
+    fetchTrialData();
+    handleTrialDataDialogOpen();
+  }
+  // 現在の本棚削除ダイアログを管理
   const handleDeleteDialogOpen = () => {
     setDeleteDialogOpen((isOpen) => !isOpen);
   }
-
-  const handleDeleteCurrentShelf = () => {
+  // 削除実行
+  const onDeleteCurrentShelf = () => {
     deleteCurrentShelf();
     handleDeleteDialogOpen();
   }
 
   return (
     <>
+      <Dialog open={trialDataDialogOpen} onClose={handleTrialDataDialogOpen}>
+        <DialogTitle>お試しデータを追加しますか？</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            この操作は取り消せません。10冊程度追加されます。
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleTrialDataDialogOpen}>キャンセル</Button>
+          <Button onClick={onFetchTrialData}>追加</Button>
+        </DialogActions>
+      </Dialog>
       <Dialog open={deleteDialogOpen} onClose={handleDeleteDialogOpen}>
         <DialogTitle>現在の本棚を削除しますか？</DialogTitle>
         <DialogContent>
@@ -42,7 +69,7 @@ export const SideBar = ({
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleDeleteDialogOpen}>キャンセル</Button>
-          <Button onClick={handleDeleteCurrentShelf}>削除</Button>
+          <Button onClick={onDeleteCurrentShelf}>削除</Button>
         </DialogActions>
       </Dialog>
       <Drawer
@@ -75,6 +102,15 @@ export const SideBar = ({
               onChange={handleAutoTaggingPublisher}
               checked={autoTaggingPublisher}
             />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemButton onClick={handleTrialDataDialogOpen} style={{ padding: "0" }} disabled={trialDataLoading}>
+              <ListItemIcon style={{ minWidth: "30px" }}>
+                <Icon>add</Icon>
+              </ListItemIcon>
+              <ListItemText primary="お試しデータを追加" />
+            </ListItemButton>
           </ListItem>
           <Divider />
           <ListItem>

@@ -35,7 +35,7 @@ export const ToolBar = ({ shelves, currentShelf, setCurrentShelf, onClickSideBar
         {/* 本棚名 */}
         <FormControl variant="standard">
           <InputLabel>
-            本棚
+            現在の本棚
           </InputLabel>
           <Select
             value={currentShelf}

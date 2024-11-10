@@ -74,6 +74,9 @@ export const BookDialog = ({ book, updateBook, deleteBook, autoTaggingAuthors, a
             height: { ideal: 1080 }
           }}
           onUpdate={(err, result) => {
+            if (err) {
+              console.error("ISBN読み取りエラー", err);
+            }
             if (result) {
               const isbn = result.getText();
               console.log(`ISBN:${isbn}を読み込み`)

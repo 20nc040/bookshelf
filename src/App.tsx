@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { GlobalStyles } from "@mui/material";
-import { useAsync } from "react-use";
+import { useAsyncFn } from "react-use";
 
-import { Book } from "./Book";
+import { Book, getTaggedBook } from "./Book";
 import { Layout } from "./Layout";
 import { ToolBar } from "./components/ToolBar";
 import { MainFAB } from "./components/MainFAB";
@@ -18,25 +18,16 @@ export const App = () => {
 
   // データ管理用React変数
   const [books, setBooks] = useState<Book[]>([]); // 本の一覧
-  const [shelves, setShelves] = useState<Set<string>>(new Set(["全ての本", "dummy"]));  // 本棚の一覧
+  const [shelves, setShelves] = useState<Set<string>>(new Set(["全ての本"]));  // 本棚の一覧
 
   // 保存済みデータの読み込み
-  const dummyDataState = useAsync(async () => {
-    const data = await getDummyData();
-    setBooks(data);
-  }, []);
-  if (dummyDataState.error) {
-    return (
-      <div>{dummyDataState.error.message}</div>
-    )
-  }
 
 
   // 状態管理用React変数
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(false); // サイドバーが開いているか
   const [searchOpen, setSearchOpen] = useState<boolean>(false); // 検索フォームが開いているか
   const [moreToolOpen, setMoreToolOpen] = useState<boolean>(false); // さらなるツールが開いているか
-  const anchorEl = useRef<HTMLButtonElement>(null);
+  const anchorEl = useRef<HTMLButtonElement>(null); // さらなるツール用アンカー
   const [layout, setLayout] = useState<Layout>("cover&info"); // 本のレイアウトの種類
   const [currentBook, setCurrentBook] = useState<Book | null>();  // 現在開いている本
   const [currentShelf, setCurrentShelf] = useState<string>("全ての本");  // 現在開いている本棚
@@ -144,6 +135,15 @@ export const App = () => {
     setCurrentShelf("全ての本");
   }
 
+  // お試しデータ読み込み関数
+  const [trialDataState, fetchTrialData] = useAsyncFn(async () => {
+    const data = await getDummyData();
+    const taggedData = data.map((book) => {
+      return getTaggedBook(book, autoTaggingAuthors, autoTaggingPublisher, addShelf);
+    })
+    setBooks((books) => [...taggedData, ...books]);
+  }, [autoTaggingAuthors, autoTaggingPublisher]);
+
 
   console.log(books.filter((book) => book.id !== "1000"));
 
@@ -173,6 +173,8 @@ export const App = () => {
         handleAutoTaggingAuthors={handleAutoTaggingAuthors}
         autoTaggingPublisher={autoTaggingPublisher}
         handleAutoTaggingPublisher={handleAutoTaggingPublisher}
+        trialDataLoading={trialDataState.loading}
+        fetchTrialData={fetchTrialData}
         deleteCurrentShelf={deleteCurrentShelf}
       />
       <MoreTool
