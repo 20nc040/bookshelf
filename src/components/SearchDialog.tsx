@@ -22,7 +22,7 @@ export const SearchDialog = ({ open, onClose, books, onSelect }: Props) => {
 
   // 検索して結果を取得
   const searchResults = useMemo(() => {
-    return query ? fuse.search(query).map(result => result.item) : books;
+    return query ? fuse.search(query) : books;
   }, [fuse, query, books]);
 
   // 検索クエリをセット

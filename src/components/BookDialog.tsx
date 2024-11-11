@@ -1,11 +1,11 @@
-import { Alert, Box, Button, Dialog, DialogActions, DialogTitle, } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContentText, DialogTitle, } from "@mui/material";
 import { Book, getTaggedBook } from "../Book";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { InputBox } from "./InputBox";
 import { useAsyncFn } from "react-use";
 import { fetchBookWithGoogleBooksAPI } from "../net/GoogleAPI";
 import { useState } from "react";
-import BarcodeScannerComponent from "react-qr-barcode-scanner";
+import { BarcodeScanner } from "@domore-hr/react-barcode-scanner";
 
 type Props = {
   book: Book;
@@ -61,31 +61,21 @@ export const BookDialog = ({ book, updateBook, deleteBook, autoTaggingAuthors, a
   const [scannedISBN, setScannedISBN] = useState<string>("");
   const handleScannerOpen = () => {
     setScannerOpen((isOpen) => !isOpen);
+    setScannedISBN("");
   }
 
   if (scannerOpen) {
     return (
       <Dialog open={scannerOpen} onClose={handleScannerOpen}>
-        <BarcodeScannerComponent
-          width="100%"
-          height="auto"
-          videoConstraints={{
-            width: { ideal: 1920 },
-            height: { ideal: 1080 }
-          }}
-          onUpdate={(err, result) => {
-            if (err) {
-              console.error("ISBN読み取りエラー", err);
-            }
-            if (result) {
-              const isbn = result.getText();
-              console.log(`ISBN:${isbn}を読み込み`)
-              setScannedISBN(isbn);
-              setValue("isbn", scannedISBN);
-              handleScannerOpen();
-            }
+        <BarcodeScanner
+          options={{ formats: ["ean_13"] }}
+          onCapture={(barcode) => {
+            console.log(barcode);
+            setScannedISBN(barcode.rawValue);
+            setValue("isbn", barcode.rawValue);
           }}
         />
+        <DialogContentText>読み込んだISBN:{scannedISBN}</DialogContentText>
       </Dialog>
     )
   }
