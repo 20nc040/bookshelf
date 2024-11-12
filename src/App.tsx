@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GlobalStyles } from "@mui/material";
 import { useAsyncFn } from "react-use";
 
@@ -13,6 +13,7 @@ import { BookDialog } from "./components/BookDialog";
 import { generateId } from "./util/generateId";
 import { SearchDialog } from "./components/SearchDialog";
 import { getDummyData } from "./util/getDummyData";
+import localforage from "localforage";
 
 export const App = () => {
 
@@ -21,7 +22,17 @@ export const App = () => {
   const [shelves, setShelves] = useState<Set<string>>(new Set(["全ての本"]));  // 本棚の一覧
 
   // 保存済みデータの読み込み
-
+  useEffect(() => {
+    localforage.getItem("books").then((data) => setBooks(data as Book[]));
+    localforage.getItem("shelves").then((data) => setShelves((data) as Set<string>));
+  }, []);
+  // データをindexedDBに同期
+  useEffect(() => {
+    localforage.setItem("books", books);
+  }, [books]);
+  useEffect(() => {
+    localforage.setItem("shelves", shelves);
+  }, [shelves]);
 
   // 状態管理用React変数
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(false); // サイドバーが開いているか
@@ -34,6 +45,23 @@ export const App = () => {
   const [currentShelf, setCurrentShelf] = useState<string>("全ての本");  // 現在開いている本棚
   const [autoTaggingAuthors, setAutoTaggingAuthors] = useState<boolean>(false);  // 本登録時に著者を自動でタグ付けするか
   const [autoTaggingPublisher, setAutoTaggingPublisher] = useState<boolean>(false);  // 本登録時に発行社を自動でタグ付けするか
+
+  // 保存済み設定の読込
+  useEffect(() => {
+    localforage.getItem("layout").then((value) => setLayout(value as Layout));
+    localforage.getItem("autoTaggingAuthors").then((value) => setAutoTaggingAuthors(value as boolean));
+    localforage.getItem("autoTaggingPublisher").then((value) => setAutoTaggingPublisher(value as boolean));
+  }, []);
+  // 設定を同期
+  useEffect(() => {
+    localforage.setItem("layout", layout);
+  }, [layout]);
+  useEffect(() => {
+    localforage.setItem("autoTaggingAuthors", autoTaggingAuthors);
+  }, [autoTaggingAuthors]);
+  useEffect(() => {
+    localforage.setItem("autoTaggingPublisher", autoTaggingPublisher);
+  }, [autoTaggingPublisher]);
 
   // ハンドリング関数
   // サイドバーをトグル
