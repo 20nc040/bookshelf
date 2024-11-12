@@ -23,7 +23,7 @@ export const fetchBookWithGoogleBooksAPI = async (isbn: string): Promise<Book | 
       id: generateId(),
       isbn: isbn,
       title: bookData.title || "タイトル取得失敗",
-      coverPath: bookData.imageLinks.smallThumbnail || bookData.imageLinks.thumbnail || undefined,
+      coverPath: bookData.imageLinks?.smallThumbnail || bookData.imageLinks?.thumbnail || undefined,
       authors: bookData.authors?.join(",") || undefined,
       publishedDate: bookData.publishedDate || undefined,
       note: bookData.description || "",
