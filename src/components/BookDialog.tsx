@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Dialog, DialogActions, DialogContentText, DialogTitle, } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogTitle, } from "@mui/material";
 import { Book, getTaggedBook } from "../Book";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { InputBox } from "./InputBox";
@@ -58,24 +58,22 @@ export const BookDialog = ({ book, updateBook, deleteBook, autoTaggingAuthors, a
 
   // ISBNスキャナー
   const [scannerOpen, setScannerOpen] = useState<boolean>(false);
-  const [scannedISBN, setScannedISBN] = useState<string>("");
   const handleScannerOpen = () => {
     setScannerOpen((isOpen) => !isOpen);
-    setScannedISBN("");
   }
 
   if (scannerOpen) {
     return (
       <Dialog open={scannerOpen} onClose={handleScannerOpen}>
+        <DialogTitle>{"ISBN13(EAN-13)バーコード読み取り"}</DialogTitle>
         <BarcodeScanner
           options={{ formats: ["ean_13"] }}
           onCapture={(barcode) => {
             console.log(barcode);
-            setScannedISBN(barcode.rawValue);
             setValue("isbn", barcode.rawValue);
+            handleScannerOpen();
           }}
         />
-        <DialogContentText>読み込んだISBN:{scannedISBN}</DialogContentText>
       </Dialog>
     )
   }
