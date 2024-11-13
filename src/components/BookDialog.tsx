@@ -5,7 +5,8 @@ import { InputBox } from "./InputBox";
 import { useAsyncFn } from "react-use";
 import { fetchBookWithGoogleBooksAPI } from "../net/GoogleAPI";
 import { useState } from "react";
-import { BarcodeScanner } from "@domore-hr/react-barcode-scanner";
+import { BarcodeScanner } from "react-barcode-scanner";
+import "react-barcode-scanner/polyfill"
 
 type Props = {
   book: Book;

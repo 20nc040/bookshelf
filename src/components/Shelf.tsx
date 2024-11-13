@@ -77,8 +77,8 @@ export const Shelf = ({ books, layout, handleCurrentBook, currentShelf }: Props)
     }}>
       {filteredBooks.map((book) => {
         return layout === "cover&info" ? (
-          <CardActionArea onClick={() => handleCurrentBook(book)}>
-            <BookCard key={book.id} >
+          <CardActionArea onClick={() => handleCurrentBook(book)} key={book.id}>
+            <BookCard>
               <BookCover
                 component="img"
                 src={book.coverPath}
