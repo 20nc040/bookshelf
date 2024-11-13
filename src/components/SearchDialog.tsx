@@ -47,19 +47,22 @@ export const SearchDialog = ({ open, onClose, books, onSelect }: Props) => {
           InputProps={{ endAdornment: <Icon>search</Icon> }}
         />
         <List>
-          {searchResults.map((book) => (
-            <ListItem key={book.id} style={{ padding: "4px" }}>
-              <ListItemButton onClick={() => handleSelect(book)} style={{ padding: "0" }}>
-                <ListItemAvatar>
-                  <Avatar
-                    src={book.coverPath}
-                    variant="rounded"
-                  />
-                </ListItemAvatar>
-                <ListItemText primary={book.title} secondary={book.authors} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          {searchResults.map((result) => {
+            const book = "id" in result ? result : result.item;
+            return (
+              <ListItem key={book.id} style={{ padding: "4px" }}>
+                <ListItemButton onClick={() => handleSelect(book)} style={{ padding: "0" }}>
+                  <ListItemAvatar>
+                    <Avatar
+                      src={book.coverPath}
+                      variant="rounded"
+                    />
+                  </ListItemAvatar>
+                  <ListItemText primary={book.title} secondary={book.authors} />
+                </ListItemButton>
+              </ListItem>
+            )
+          })}
         </List>
       </DialogContent>
     </Dialog>
