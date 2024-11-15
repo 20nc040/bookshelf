@@ -3,7 +3,7 @@ import { Book, getTaggedBook } from "../Book";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { InputBox } from "./InputBox";
 import { useAsyncFn } from "react-use";
-import { fetchBookWithGoogleBooksAPI } from "../net/GoogleAPI";
+import { fetchBookWithAPIs } from "../net/fetchBookWithAPIs";
 import { useState } from "react";
 import { BarcodeScanner } from "react-barcode-scanner";
 import "react-barcode-scanner/polyfill"
@@ -33,7 +33,7 @@ export const BookDialog = ({ book, updateBook, deleteBook, autoTaggingAuthors, a
   };
   const [fetchState, fetchBook] = useAsyncFn(async () => {
     const isbn = getValues("isbn");
-    const data = await fetchBookWithGoogleBooksAPI(isbn);
+    const data = await fetchBookWithAPIs(isbn);
     if (data == null) {
       return;
     }

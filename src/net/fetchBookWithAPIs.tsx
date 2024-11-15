@@ -5,7 +5,9 @@ import { generateId } from "../util/generateId";
 
 // Google Books APIのURL
 const GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes";
-export const fetchBookWithGoogleBooksAPI = async (isbn: string): Promise<Book | null> => {
+// 国立国会図書館サーチの書影APIのURL
+const NDL_API_URL = "https://ndlsearch.ndl.go.jp/thumbnail/";
+export const fetchBookWithAPIs = async (isbn: string): Promise<Book | null> => {
   try {
     const response = await axios.get(`${GOOGLE_BOOKS_API_URL}`, {
       params: {
@@ -15,7 +17,14 @@ export const fetchBookWithGoogleBooksAPI = async (isbn: string): Promise<Book | 
     const bookData = response.data.items?.[0].volumeInfo;
     if (!bookData) {
       console.warn(`Google Books APIにはISBN:${isbn}のデータが見つかりませんでした`);
-      return null;
+      const book: Book = {
+        id: generateId(),
+        isbn: isbn,
+        title: "新しい本",
+        coverPath: `${NDL_API_URL}${isbn}.jpg` || undefined,
+        note: "",
+      };
+      return book;
     }
 
     // APIのレスポンスからBook型を生成
@@ -23,7 +32,7 @@ export const fetchBookWithGoogleBooksAPI = async (isbn: string): Promise<Book | 
       id: generateId(),
       isbn: isbn,
       title: bookData.title || "タイトル取得失敗",
-      coverPath: bookData.imageLinks?.smallThumbnail || bookData.imageLinks?.thumbnail || undefined,
+      coverPath: bookData.imageLinks?.smallThumbnail || bookData.imageLinks?.thumbnail || `${NDL_API_URL}${isbn}.jpg` || undefined,
       authors: bookData.authors?.join(",") || undefined,
       publishedDate: bookData.publishedDate || undefined,
       note: bookData.description || "",
@@ -31,7 +40,7 @@ export const fetchBookWithGoogleBooksAPI = async (isbn: string): Promise<Book | 
 
     return book;
   } catch (error) {
-    console.error("Error fetching book with Google Books API", error);
+    console.error("Error fetching book with APIs", error);
     return null;
   }
 };
