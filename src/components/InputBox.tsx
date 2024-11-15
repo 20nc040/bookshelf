@@ -62,6 +62,9 @@ export const InputBox = ({ label, formRegisterReturn, fieldName, setValue, error
           <TextField
             label={label}
             {...formRegisterReturn}
+            InputLabelProps={{
+              shrink: true
+            }}
             InputProps={{
               endAdornment:
                 <InputAdornment position="end">
