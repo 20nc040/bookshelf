@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { GlobalStyles } from "@mui/material";
+import { createTheme, GlobalStyles, ThemeProvider } from "@mui/material";
 import { useAsyncFn } from "react-use";
 
 import { Book, getTaggedBook } from "./Book";
@@ -15,8 +15,20 @@ import { SearchDialog } from "./components/SearchDialog";
 import { getDummyData } from "./util/getDummyData";
 import localforage from "localforage";
 import { exportData, importData } from "./util/ImportExportData";
+import { amber, green } from "@mui/material/colors";
 
 export const App = () => {
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: green[700],
+      },
+      secondary: {
+        main: amber[300],
+      }
+    }
+  });
 
   // データ管理用React変数
   const [books, setBooks] = useState<Book[]>([]); // 本の一覧
@@ -223,75 +235,72 @@ export const App = () => {
 
   return (
     <>
-      <GlobalStyles styles={{
-        body: {
-          margin: 0,
-          padding: 0,
-          background: "rgb(240,240,240)",
-        }
-      }} />
-      <ToolBar
-        shelves={shelves}
-        currentShelf={currentShelf}
-        setCurrentShelf={setCurrentShelf}
-        onClickSideBar={handleToggleSideBar}
-        onClickSearch={handleToggleSearchDialog}
-        onClickMoreTool={handleMoreToolOpen}
-        buttonRef={anchorEl}
-      />
-      <SideBar
-        sideBarOpen={sideBarOpen}
-        onCloseSideBar={handleToggleSideBar}
-        autoTaggingAuthors={autoTaggingAuthors}
-        handleAutoTaggingAuthors={handleAutoTaggingAuthors}
-        autoTaggingPublisher={autoTaggingPublisher}
-        handleAutoTaggingPublisher={handleAutoTaggingPublisher}
-        handleImportData={handleImportData}
-        handleExportData={handleExportData}
-        trialDataLoading={trialDataState.loading}
-        fetchTrialData={fetchTrialData}
-        deleteCurrentShelf={deleteCurrentShelf}
-      />
-      <MoreTool
-        open={moreToolOpen}
-        onClose={handleMoreToolOpen}
-        anchorEl={anchorEl}
-        sort={sort}
-        handleSort={handleSort}
-        handleLayout={handleChangeLayout}
-      />
-      {currentBook != null && (
-        <BookDialog
-          book={currentBook}
-          updateBook={updateBook}
-          deleteBook={deleteBook}
-          autoTaggingAuthors={autoTaggingAuthors}
-          autoTaggingPublisher={autoTaggingPublisher}
-          addShelf={addShelf}
-          open={Boolean(currentBook)}
-          onClose={unsetCurrentBook}
+      <ThemeProvider theme={theme}>
+        <GlobalStyles styles={{
+          body: {
+            margin: 0,
+            padding: 0,
+            background: "rgb(240,240,240)",
+          }
+        }} />
+        <ToolBar
+          shelves={shelves}
+          currentShelf={currentShelf}
+          setCurrentShelf={setCurrentShelf}
+          onClickSideBar={handleToggleSideBar}
+          onClickSearch={handleToggleSearchDialog}
+          onClickMoreTool={handleMoreToolOpen}
+          buttonRef={anchorEl}
         />
-      )}
-      <SearchDialog
-        open={searchOpen}
-        onClose={handleToggleSearchDialog}
-        books={books}
-        onSelect={handleCurrentBook}
-      />
-      <MainFAB
-        onClick={handleToggleNewBookDialog}
-      />
-      <Shelf
-        books={books}
-        layout={layout}
-        handleCurrentBook={handleCurrentBook}
-        currentShelf={currentShelf}
-      />
-      <p style={{ overflowWrap: "break-word" }}>
-        {layout + "\n"}
-        {currentShelf + ":"}{shelves}{"\n"}
-        {JSON.stringify(books)}
-      </p>
+        <SideBar
+          sideBarOpen={sideBarOpen}
+          onCloseSideBar={handleToggleSideBar}
+          autoTaggingAuthors={autoTaggingAuthors}
+          handleAutoTaggingAuthors={handleAutoTaggingAuthors}
+          autoTaggingPublisher={autoTaggingPublisher}
+          handleAutoTaggingPublisher={handleAutoTaggingPublisher}
+          handleImportData={handleImportData}
+          handleExportData={handleExportData}
+          trialDataLoading={trialDataState.loading}
+          fetchTrialData={fetchTrialData}
+          deleteCurrentShelf={deleteCurrentShelf}
+        />
+        <MoreTool
+          open={moreToolOpen}
+          onClose={handleMoreToolOpen}
+          anchorEl={anchorEl}
+          sort={sort}
+          handleSort={handleSort}
+          handleLayout={handleChangeLayout}
+        />
+        {currentBook != null && (
+          <BookDialog
+            book={currentBook}
+            updateBook={updateBook}
+            deleteBook={deleteBook}
+            autoTaggingAuthors={autoTaggingAuthors}
+            autoTaggingPublisher={autoTaggingPublisher}
+            addShelf={addShelf}
+            open={Boolean(currentBook)}
+            onClose={unsetCurrentBook}
+          />
+        )}
+        <SearchDialog
+          open={searchOpen}
+          onClose={handleToggleSearchDialog}
+          books={books}
+          onSelect={handleCurrentBook}
+        />
+        <MainFAB
+          onClick={handleToggleNewBookDialog}
+        />
+        <Shelf
+          books={books}
+          layout={layout}
+          handleCurrentBook={handleCurrentBook}
+          currentShelf={currentShelf}
+        />
+      </ThemeProvider>
     </>
   );
 };
