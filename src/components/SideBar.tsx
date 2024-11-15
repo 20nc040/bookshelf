@@ -8,6 +8,8 @@ type Props = {
   handleAutoTaggingAuthors: () => void;
   autoTaggingPublisher: boolean;
   handleAutoTaggingPublisher: () => void;
+  handleImportData: () => void;
+  handleExportData: () => void;
   trialDataLoading: boolean;
   fetchTrialData: () => void;
   deleteCurrentShelf: () => void;
@@ -20,6 +22,8 @@ export const SideBar = ({
   handleAutoTaggingAuthors,
   autoTaggingPublisher,
   handleAutoTaggingPublisher,
+  handleImportData,
+  handleExportData,
   trialDataLoading,
   fetchTrialData,
   deleteCurrentShelf,
@@ -102,6 +106,23 @@ export const SideBar = ({
               onChange={handleAutoTaggingPublisher}
               checked={autoTaggingPublisher}
             />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemButton onClick={handleExportData} style={{ padding: 0 }}>
+              <ListItemIcon style={{ minWidth: "30px" }}>
+                <Icon>file_download</Icon>
+              </ListItemIcon>
+              <ListItemText primary="データをダウンロード" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton onClick={handleImportData} style={{ padding: 0 }}>
+              <ListItemIcon style={{ minWidth: "30px" }}>
+                <Icon>file_upload</Icon>
+              </ListItemIcon>
+              <ListItemText primary="データをアップロード" />
+            </ListItemButton>
           </ListItem>
           <Divider />
           <ListItem>

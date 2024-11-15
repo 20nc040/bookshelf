@@ -14,6 +14,7 @@ import { generateId } from "./util/generateId";
 import { SearchDialog } from "./components/SearchDialog";
 import { getDummyData } from "./util/getDummyData";
 import localforage from "localforage";
+import { exportData, importData } from "./util/ImportExportData";
 
 export const App = () => {
 
@@ -33,6 +34,25 @@ export const App = () => {
   useEffect(() => {
     localforage.setItem("shelves", shelves);
   }, [shelves]);
+
+  // インポート機能
+  const handleImportData = () => {
+    importData((bookData, shelfData) => {
+      setBooks(bookData);
+      if (shelfData.size === 0) {
+        setShelves(new Set(["全ての本"]));
+      } else {
+        setShelves(shelfData);
+      }
+      console.log("データを読み込みました");
+    });
+  }
+  // エクスポート機能
+  const handleExportData = () => {
+    exportData(books, shelves);
+    console.log("データを書き出しました");
+    console.log(shelves);
+  }
 
   // 状態管理用React変数
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(false); // サイドバーが開いているか
@@ -226,6 +246,8 @@ export const App = () => {
         handleAutoTaggingAuthors={handleAutoTaggingAuthors}
         autoTaggingPublisher={autoTaggingPublisher}
         handleAutoTaggingPublisher={handleAutoTaggingPublisher}
+        handleImportData={handleImportData}
+        handleExportData={handleExportData}
         trialDataLoading={trialDataState.loading}
         fetchTrialData={fetchTrialData}
         deleteCurrentShelf={deleteCurrentShelf}
