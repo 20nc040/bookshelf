@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "./",
   plugins: [react(), VitePWA({
     registerType: "autoUpdate", manifest: {
       name: "bookshelf",
@@ -31,6 +32,7 @@ export default defineConfig({
           purpose: "maskable",
         },
       ],
+      id: "/bookshelf/",
     },
   })],
   optimizeDeps: {
