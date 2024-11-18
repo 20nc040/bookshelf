@@ -81,7 +81,7 @@ export const SideBar = ({
         onClose={onCloseSideBar}
       >
         <Box boxShadow="3" display="flex" flexDirection={"column"} alignItems="center" justifyContent="center" sx={{ backgroundColor: "#1b5e20" }} padding="5px">
-          <Avatar src="/icon-512x512.png" sx={{ width: "100px", height: "auto" }} />
+          <Avatar src="./icon-512x512.png" sx={{ width: "100px", height: "auto" }} />
           <Typography color="#f0f0f0">bookshelf</Typography>
         </Box>
         <Divider />
