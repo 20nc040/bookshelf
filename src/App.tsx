@@ -222,7 +222,7 @@ export const App = () => {
   // お試しデータ読み込み関数
   const [trialDataState, fetchTrialData] = useAsyncFn(async () => {
     const data = await getDummyData();
-    const taggedData = data.map((book) => {
+    const taggedData = data.filter((book): book is NonNullable<typeof book> => book != null).map((book: Book) => {
       return getTaggedBook(book, autoTaggingAuthors, autoTaggingPublisher, addShelf);
     })
     setBooks((books) => [...taggedData, ...books]);
