@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Drawer, Icon, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Switch } from "@mui/material";
+import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Drawer, Icon, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Switch, Typography } from "@mui/material";
 import { useState } from "react";
 
 type Props = {
@@ -80,9 +80,10 @@ export const SideBar = ({
         open={sideBarOpen}
         onClose={onCloseSideBar}
       >
-        <div>
-          bookshelf
-        </div>
+        <Box boxShadow="3" display="flex" flexDirection={"column"} alignItems="center" justifyContent="center" sx={{ backgroundColor: "#1b5e20" }} padding="5px">
+          <Avatar src="/icon-512x512.png" sx={{ width: "100px", height: "auto" }} />
+          <Typography color="#f0f0f0">bookshelf</Typography>
+        </Box>
         <Divider />
         <List >
           <ListItem>
