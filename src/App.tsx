@@ -51,11 +51,7 @@ export const App = () => {
   const handleImportData = () => {
     importData((bookData, shelfData) => {
       setBooks(bookData);
-      if (shelfData.size === 0) {
-        setShelves(new Set(["全ての本"]));
-      } else {
-        setShelves(shelfData);
-      }
+      setShelves(shelfData.add("全ての本"));
       console.log("データを読み込みました");
     });
   }
